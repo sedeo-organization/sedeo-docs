@@ -1,0 +1,53 @@
+openapi: 3.0.3
+info:
+  title: Sedeo
+  description: ""
+  version: 1.0.0
+tags:
+  - name: user
+    description: All requests related to user
+paths:
+
+  /users/me:
+    get:
+      tags:
+        - user
+      summary: Fetch information about currently logged in user profile
+      description: In response you will find information about user profile
+      operationId: fetch-user-profile
+      responses:
+        '200':
+          description: User profile fetched successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfileResponse'
+        '404':
+          description: User was not found
+        '409':
+          description: Unexpected error occurred
+
+components:
+  schemas:
+
+    UserProfileResponse:
+      properties:
+        userId:
+          type: string
+          example: 3dc197b6-ec2a-41e1-a31a-cdd2cb169cf0
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: Doe
+        phoneNumber:
+          type: string
+          example: 512348561
+        email:
+          type: string
+          example: john.doe@example.com
+        accountBalance:
+          type: number
+          example: 25.15
+
