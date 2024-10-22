@@ -27,6 +27,48 @@ paths:
         '409':
           description: Unexpected error occurred
 
+  /users/friends:
+    get:
+      tags:
+        - user
+      summary: Fetch friends of a logged in user
+      description: In response you will get friends of a logged in user
+      operationId: fetch-user-friends
+      responses:
+        '200':
+          description: User friends fetched successfully
+          content:
+            application/json:
+              schema:
+                properties:
+                  friends:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UserFriend'
+        '409':
+          description: Unexpected error occurred
+
+  /users/friend-requests:
+    get:
+      tags:
+        - user
+      summary: Fetch friend requests of a logged in user
+      description: In response you will get friend requests of a logged in user
+      operationId: fetch-user-friend-requests
+      responses:
+        '200':
+          description: User friend requests fetched successfully
+          content:
+            application/json:
+              schema:
+                properties:
+                  friendRequests:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UserFriend'
+        '409':
+          description: Unexpected error occurred
+
 components:
   schemas:
 
@@ -51,3 +93,17 @@ components:
           type: number
           example: 25.15
 
+    UserFriend:
+      properties:
+        userId:
+          type: string
+          example: 3dc197b6-ec2a-41e1-a31a-cdd2cb169cf0
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: Doe
+        phoneNumber:
+          type: string
+          example: 512348561
