@@ -6,6 +6,8 @@ info:
 tags:
   - name: user
     description: All requests related to user
+  - name: settlement
+    description: All requests related to settlement
 paths:
 
   /users/me:
@@ -146,6 +148,41 @@ paths:
         '409':
           description: Unexpected error occurred
 
+  /settlement-groups:
+    get:
+      tags:
+        - settlement
+      summary: Fetch all settled, pending or both types of settlement groups
+      description: |
+        In response you wil get settlement groups. You can specify status
+        of the settlement group with a query parameter.
+        
+        Available query parameter values: `settled`, `pending`.
+        
+        When query parameter is not specified all kind of settlements groups will be fetched.
+      operationId: fetch-settlement-groups
+      parameters:
+        - in: query
+          name: status
+          description: Status of the settlement groups to be fetched
+      responses:
+        '200':
+          description: Settlement groups fetched successfully
+          content:
+            application/json:
+              schema:
+                properties:
+                  settlementGroups:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SettlementGroup'
+        '400':
+          description: Bad request
+        '401':
+          description: User is not authenticated
+        '409':
+          description: Unexpected error occurred
+
 components:
   schemas:
 
@@ -200,3 +237,11 @@ components:
           type: string
           example: 512348561
 
+    SettlementGroup:
+      properties:
+        groupId:
+          type: string
+          example: 3dc197b6-ec2a-41e1-a31a-cdd2cb169cf0
+        title:
+          type: string
+          example: Holidays in Denmark
