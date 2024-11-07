@@ -182,6 +182,29 @@ paths:
           description: User is not authenticated
         '409':
           description: Unexpected error occurred
+    post:
+      tags:
+        - settlement
+      summary: Create a settlement group
+      description: |
+        Create a settlement group with given groupId
+      operationId: create-settlement-group
+      requestBody:
+        description: GroupId and title of settlement group to be created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettlementGroup'
+      responses:
+        '201':
+          description: Settlement group was created successfully
+        '401':
+          description: User is not authenticated
+        '400':
+          description: Bad request
+        '409':
+          description: Unexpected error occurred
+
 
 components:
   schemas:
