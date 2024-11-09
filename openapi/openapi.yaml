@@ -205,6 +205,58 @@ paths:
         '409':
           description: Unexpected error occurred
 
+  /settlement-groups/{groupId}/settlements:
+    post:
+      tags:
+        - settlement
+      summary: Create a new settlement for settlement group
+      description: |
+        Create a settlement for a settlement group referenced by groupId
+      operationId: create-settlement-group
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - type: object
+                  properties:
+                    settlementId:
+                      type: string
+                      example: '3dc197b6-ec2a-41e1-a31a-cdd2cb169cf0'
+                    title:
+                      type: string
+                      example: Dinner at McDonald's
+                    totalValue:
+                      type: integer
+                      example: 200
+                    settlementExchanges:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          exchangeId:
+                            type: string
+                            example: '3dc197b6-ec2a-41e1-a31a-cdd2cb169cf0'
+                          debtorUserId:
+                            type: string
+                            example: '3dc197b6-ec2a-41e1-a31a-cdd2cb169cf0'
+                          creditorUserId:
+                            type: string
+                            example: '3dc197b6-ec2a-41e1-a31a-cdd2cb169cf0'
+                          value:
+                            type: integer
+                            example: 50
+      responses:
+        '201':
+          description: Settlement exchange created successfully
+        '400':
+          description: Bad request
+        '401':
+          description: User is not authenticated
+        '403':
+          description: User is not authorized to access that resource
+        '409':
+          description: Unexpected error occurred
 
 components:
   schemas:
