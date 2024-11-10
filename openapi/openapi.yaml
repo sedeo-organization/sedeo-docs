@@ -257,6 +257,31 @@ paths:
           description: User is not authorized to access that resource
         '409':
           description: Unexpected error occurred
+    get:
+      tags:
+        - settlement
+      summary: Fetch all settlements
+      description: |
+        Fetch all settlements for a group
+      operationId: fetch-settlements
+      responses:
+        '200':
+          description: Settlements fetched successfully
+          content:
+            application/json:
+              schema:
+                properties:
+                  settlements:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Settlement'
+        '400':
+          description: Bad request
+        '401':
+          description: User is not authenticated
+        '409':
+          description: Unexpected error occurred
+
 
 components:
   schemas:
@@ -320,3 +345,12 @@ components:
         title:
           type: string
           example: Holidays in Denmark
+
+    Settlement:
+      properties:
+        settlementId:
+          type: string
+          example: 3dc197b6-ec2a-41e1-a31a-cdd2cb169cf0
+        totalValue:
+          type: integer
+          example: 250.15
