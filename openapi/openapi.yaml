@@ -282,6 +282,60 @@ paths:
         '409':
           description: Unexpected error occurred
 
+  /settlements/{settlementId}:
+    get:
+      tags:
+        - settlement
+      summary: Fetch settlement details
+      description: |
+        Fetch settlement details given settlement id
+      operationId: fetch-settlement-details
+      responses:
+        '200':
+          description: Settlements details fetched successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      title:
+                        type: string
+                        example: Dinner at McDonald's
+                      totalValue:
+                        type: integer
+                        example: 200
+                      settlementExchanges:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            exchangeId:
+                              type: string
+                              example: '3dc197b6-ec2a-41e1-a31a-cdd2cb169cf0'
+                            debtorFirstName:
+                              type: string
+                              example: 'John'
+                            debtorLastName:
+                              type: string
+                              example: 'Doe'
+                            creditorFirstName:
+                              type: string
+                              example: 'Adam'
+                            creditorLastName:
+                              type: string
+                              example: 'Savage'
+                            value:
+                              type: integer
+                              example: 50
+        '400':
+          description: Bad request
+        '401':
+          description: User is not authenticated
+        '403':
+          description: User is not authorized to access that resource
+        '409':
+          description: Unexpected error occurred
 
 components:
   schemas:
