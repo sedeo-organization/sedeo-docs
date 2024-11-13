@@ -345,6 +345,40 @@ paths:
         '409':
           description: Unexpected error occurred
 
+  /settlement-groups/{groupId}/settlements/{settlementId}/exchanges/{exchangeId}:
+    patch:
+      tags:
+        - settlement
+      summary: Settle an exchange
+      description: Use this endpoint to settle an exchange
+      operationId: settle-exchange
+      requestBody:
+        description: |
+          Status to which exchange should be set to
+          
+          Allowed values: `settled`
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  example: settled
+      responses:
+        '200':
+          description: Settlement has been settled successfully
+        '400':
+          description: Bad request
+        '401':
+          description: User is not authenticated
+        '403':
+          description: User is not authorized to access that resource
+        '404':
+          description: Exchange was not found
+        '409':
+          description: Unexpected error occurred
+
 components:
   schemas:
 
