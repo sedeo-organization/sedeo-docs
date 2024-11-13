@@ -194,7 +194,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SettlementGroup'
+              allOf:
+                - $ref: '#/components/schemas/SettlementGroup'
+                - type: object
+                  properties:
+                    participantIds:
+                      type: array
+                      items:
+                        type: string
+                        example: '3dc197b6-ec2a-41e1-a31a-cdd2cb169cf0'
       responses:
         '201':
           description: Settlement group was created successfully
@@ -282,7 +290,7 @@ paths:
         '409':
           description: Unexpected error occurred
 
-  /settlements/{settlementId}:
+  /settlement-groups/{groupId}/settlements/{settlementId}:
     get:
       tags:
         - settlement
