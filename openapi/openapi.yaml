@@ -379,6 +379,34 @@ paths:
         '409':
           description: Unexpected error occurred
 
+  /settlement-groups/{groupId}/participants:
+    get:
+      tags:
+        - settlement
+      summary: Fetch all settlement group participants
+      description: |
+        Fetch all participants for a settlement group
+      operationId: fetch-settlement-group-participants
+      responses:
+        '200':
+          description: Participants fetched successfully
+          content:
+            application/json:
+              schema:
+                properties:
+                  participants:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Participant'
+        '403':
+          description: User is not authorized to access that resource
+        '400':
+          description: Bad request
+        '401':
+          description: User is not authenticated
+        '409':
+          description: Unexpected error occurred
+
 components:
   schemas:
 
@@ -450,3 +478,15 @@ components:
         totalValue:
           type: integer
           example: 250.15
+          
+    Participant:
+      properties:
+        userId:
+          type: string
+          example: 3dc197b6-ec2a-41e1-a31a-cdd2cb169cf0
+        firstName:
+          type: string
+          example: Joe
+        lastName:
+          type: string
+          example: Doe
