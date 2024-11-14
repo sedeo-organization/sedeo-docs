@@ -251,7 +251,7 @@ paths:
                           creditorUserId:
                             type: string
                             example: '3dc197b6-ec2a-41e1-a31a-cdd2cb169cf0'
-                          value:
+                          exchangeValue:
                             type: integer
                             example: 50
       responses:
@@ -333,7 +333,7 @@ paths:
                             creditorLastName:
                               type: string
                               example: 'Savage'
-                            value:
+                            exchangeValue:
                               type: integer
                               example: 50
         '400':
