@@ -8,6 +8,8 @@ tags:
     description: All requests related to user
   - name: settlement
     description: All requests related to settlement
+  - name: security
+    description: All requests related to security
 paths:
 
   /users/me:
@@ -99,8 +101,8 @@ paths:
       operationId: accept-or-reject-a-friend-request
       requestBody:
         description: |
-            Status to which the friend request should be set to
-            Allowed values: `rejected`, `accepted`
+          Status to which the friend request should be set to
+          Allowed values: `rejected`, `accepted`
         content:
           application/json:
             schema:
@@ -407,6 +409,79 @@ paths:
         '409':
           description: Unexpected error occurred
 
+  /registration:
+    post:
+      tags:
+        - security
+      summary: Register a new user
+      description: |
+        Register a new user
+      operationId: register-new-user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  type: string
+                  example: 'example@email.com'
+                firstName:
+                  type: string
+                  example: Joe
+                lastName:
+                  type: string
+                  example: Doe
+                phoneNumber:
+                  type: string
+                  example: 543678921
+                password:
+                  type: string
+                  example: somePassword123#
+      responses:
+        '201':
+          description: User created successfully
+        '400':
+          description: Bad request
+        '409':
+          description: Unexpected error occurred | User with that email or phone number already exists
+
+  /login:
+    post:
+      tags:
+        - security
+      summary: Login as a user
+      description: |
+        Login as a user
+      operationId: login-as-user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                email:
+                  type: string
+                  example: 'example@email.com'
+                password:
+                  type: string
+                  example: somePassword123#
+      responses:
+        '201':
+          description: User logged in successfully
+          content:
+            application/json:
+              schema:
+                properties:
+                  jwt:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+                    .eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ
+                    .SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+        '400':
+          description: Bad request
+        '401':
+          description: User is not authenticated
+        '409':
+          description: Unexpected error occurred
 components:
   schemas:
 
@@ -478,7 +553,7 @@ components:
         totalValue:
           type: integer
           example: 250.15
-          
+
     Participant:
       properties:
         userId:
