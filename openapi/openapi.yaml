@@ -150,6 +150,68 @@ paths:
         '409':
           description: Unexpected error occurred
 
+  /users/password:
+    post:
+      tags:
+        - user
+      summary: Request token for resetting password
+      description: |
+        Send a request for a password change
+      operationId: request-password-reset-token
+      requestBody:
+        description: Include email in order to send password reset request
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - email
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: 'john.doe@gmail.com'
+      responses:
+        '200':
+          description: "Request processed"
+        '400':
+          description: "Email is invalid"
+    patch:
+      tags:
+        - user
+      summary: Reset users password
+      description: |
+        Provide new password to change the old one
+      operationId: reset-users-password
+      requestBody:
+        description: Include new password
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - password
+              allOf:
+                - type: object
+                  properties:
+                    token:
+                      type: string
+                      example: "3dc197b6-ec2a-41e1-a31a-cdd2cb169cf0"
+                - type: object
+                  properties:
+                    password:
+                      type: string
+                      example: 'a$56vc6&MN'
+      responses:
+        '200':
+          description: Password changed successfully
+        '400':
+          description: Bad request
+        '403':
+          description: Password reset token is invalid
+        '409':
+          description: Password reset token is expired
+
   /settlement-groups:
     get:
       tags:
