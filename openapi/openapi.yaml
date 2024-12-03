@@ -494,6 +494,37 @@ paths:
           description: User is not authorized to access that resource
         '409':
           description: Unexpected error occurred
+    patch:
+      tags:
+        - settlement
+      summary: Bulk settle exchanges
+      description: |
+        Bulk settle exchanges for debtor and creditor within a group
+      operationId: bulk-settle-exchanges
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - type: object
+                  properties:
+                    debtorUserId:
+                      type: string
+                      example: '3dc197b6-ec2a-41e1-a31a-cdd2cb169cf0'
+                    creditorUserId:
+                      type: string
+                      example: '3dc197b6-ec2a-41e1-a31a-cdd2cb161cf0'
+      responses:
+        '200':
+          description: Exchanges settled successfully
+        '400':
+          description: Bad request
+        '401':
+          description: User is not authenticated
+        '403':
+          description: User is not authorized to access that resource
+        '409':
+          description: Unexpected error occurred
 
   /settlement-groups/{groupId}/participants:
     get:
