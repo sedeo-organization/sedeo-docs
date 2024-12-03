@@ -443,6 +443,58 @@ paths:
         '409':
           description: Unexpected error occurred
 
+  /settlement-groups/{groupId}/summary:
+    get:
+      tags:
+        - settlement
+      summary: Fetch group summary
+      description: |
+        Fetch group summary
+      operationId: fetch-group-summary
+      responses:
+        '200':
+          description: Group summary fetched successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      summarisedExchanges:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            debtorUserId:
+                              type: string
+                              example: '3dc197b6-ec2a-41e1-a31a-cdd2cb169cf0'
+                            debtorFirstName:
+                              type: string
+                              example: 'John'
+                            debtorLastName:
+                              type: string
+                              example: 'Doe'
+                            creditorUserId:
+                              type: string
+                              example: '3dc197b6-ec2a-41e1-a31a-cdd2cb169cf0'
+                            creditorFirstName:
+                              type: string
+                              example: 'Adam'
+                            creditorLastName:
+                              type: string
+                              example: 'Savage'
+                            summarisedExchangesValue:
+                              type: integer
+                              example: 50
+        '400':
+          description: Bad request
+        '401':
+          description: User is not authenticated
+        '403':
+          description: User is not authorized to access that resource
+        '409':
+          description: Unexpected error occurred
+
   /settlement-groups/{groupId}/participants:
     get:
       tags:
