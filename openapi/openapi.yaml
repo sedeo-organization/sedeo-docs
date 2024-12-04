@@ -447,10 +447,19 @@ paths:
     get:
       tags:
         - settlement
-      summary: Fetch group summary
+      summary: Fetch settled, pending or both exchange summaries for group participants
       description: |
-        Fetch group summary
+        In response you will get aggregated exchanges for all group participants. You can specify status
+        of the exchanges with a query parameter.
+
+        Available query parameter values: `settled`, `pending`.
+
+        When query parameter is not specified all kind of aggregated exchanges will be fetched.
       operationId: fetch-group-summary
+      parameters:
+        - in: query
+          name: status
+          description: Status of the exchanges summary to be fetched
       responses:
         '200':
           description: Group summary fetched successfully
