@@ -10,6 +10,8 @@ tags:
     description: All requests related to settlement
   - name: security
     description: All requests related to security
+  - name: friend
+    description: All requests related to friends
 paths:
 
   /users/me:
@@ -28,125 +30,6 @@ paths:
                 $ref: '#/components/schemas/UserProfileResponse'
         '404':
           description: User was not found
-        '409':
-          description: Unexpected error occurred
-
-  /users/friends:
-    get:
-      tags:
-        - user
-      summary: Fetch friends of a logged in user
-      description: In response you will get friends of a logged in user
-      operationId: fetch-user-friends
-      responses:
-        '200':
-          description: User friends fetched successfully
-          content:
-            application/json:
-              schema:
-                properties:
-                  friends:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/UserFriend'
-        '409':
-          description: Unexpected error occurred
-
-  /users/friend-requests:
-    get:
-      tags:
-        - user
-      summary: Fetch friend requests of a logged in user
-      description: In response you will get friend requests of a logged in user
-      operationId: fetch-user-friend-requests
-      responses:
-        '200':
-          description: User friend requests fetched successfully
-          content:
-            application/json:
-              schema:
-                properties:
-                  friendRequests:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/UserFriend'
-        '409':
-          description: Unexpected error occurred
-    post:
-      tags:
-        - user
-      summary: Create a new friend request
-      description: Use this endpoint to create a new friend request
-      operationId: create-a-new-friend-request
-      requestBody:
-        description: User id of a friend request recipient
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                recipientUserId:
-                  type: string
-                  example: 1e95974a-14ed-11ee-be56-0242ac120002
-      responses:
-        '201':
-          description: User friend request created successfully
-        '409':
-          description: Unexpected error occurred
-    patch:
-      tags:
-        - user
-      summary: Accept or reject a friend request
-      description: Use this endpoint to accept or reject a friend request
-      operationId: accept-or-reject-a-friend-request
-      requestBody:
-        description: |
-          Status to which the friend request should be set to
-          Allowed values: `rejected`, `accepted`
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                status:
-                  type: string
-                  example: accepted
-      responses:
-        '200':
-          description: Friend has been added successfully
-        '400':
-          description: Bad request
-        '401':
-          description: User is not authenticated
-        '403':
-          description: User is not authorized to access that resource
-        '404':
-          description: Friend request was not found
-        '409':
-          description: Unexpected error occurred
-
-  /users/potential-friends:
-    get:
-      tags:
-        - user
-      summary: Fetch all potential friends for a logged in user
-      description: In response you will get all potential friends given search phrase as a query parameter
-      operationId: fetch-user-potential-friends
-      parameters:
-        - in: query
-          name: search_phrase
-          description: Search phrase by which the potential friends will be fetched
-      responses:
-        '200':
-          description: User potential friends fetched successfully
-          content:
-            application/json:
-              schema:
-                properties:
-                  potentialFriends:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/PotentialFriend'
         '409':
           description: Unexpected error occurred
 
@@ -636,6 +519,134 @@ paths:
           description: User is not authenticated
         '409':
           description: Unexpected error occurred
+
+  /friends:
+    get:
+      tags:
+        - friend
+      summary: Fetch friends of a logged in user
+      description: In response you will get friends of a logged in user
+      operationId: fetch-user-friends
+      responses:
+        '200':
+          description: User friends fetched successfully
+          content:
+            application/json:
+              schema:
+                properties:
+                  friends:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UserFriend'
+        '409':
+          description: Unexpected error occurred
+
+  /friendship-invitations:
+    get:
+      tags:
+        - friend
+      summary: Fetch friendship invitations of a logged in user
+      description: In response you will get friendship invitations of a logged in user
+      operationId: fetch-user-friendship-invitations
+      responses:
+        '200':
+          description: User friend requests fetched successfully
+          content:
+            application/json:
+              schema:
+                properties:
+                  invitations:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/InvitationWithUserFriend'
+        '409':
+          description: Unexpected error occurred
+    post:
+      tags:
+        - friend
+      summary: Create a new friendship invitation
+      description: Use this endpoint to create a new friendship invitation
+      operationId: create-a-new-friendship-invitation
+      requestBody:
+        description: User id of a friendship invitation recipient
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                invitedUserId:
+                  type: string
+                  example: 1e95974a-14ed-11ee-be56-0242ac120002
+      responses:
+        '201':
+          description: User friend request created successfully
+        '409':
+          description: Unexpected error occurred
+
+  /friendship-invitations/{friendshipInvitationId}:
+    patch:
+      tags:
+        - friend
+      summary: Accept or reject a friendship invitation
+      description: Use this endpoint to accept or reject a friendship invitation
+      operationId: accept-or-reject-a-friendship-invitation
+      parameters:
+        - name: friendshipInvitationId
+          in: path
+          required: true
+          description: The ID of the friendship invitation whose status will be changed.
+          schema:
+            type: string
+      requestBody:
+        description: |
+          Status to which the friendship invitation should be set to
+          Allowed values: `rejected`, `accepted`
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  example: accepted
+      responses:
+        '200':
+          description: Friend has been added successfully
+        '400':
+          description: Bad request
+        '401':
+          description: User is not authenticated
+        '403':
+          description: User is not authorized to access that resource
+        '404':
+          description: Friendship invitation was not found
+        '409':
+          description: Unexpected error occurred
+
+  /potential-friends:
+    get:
+      tags:
+        - friend
+      summary: Fetch all potential friends for a logged in user
+      description: In response you will get all potential friends given search phrase as a query parameter
+      operationId: fetch-user-potential-friends
+      parameters:
+        - in: query
+          name: search_phrase
+          description: Search phrase by which the potential friends will be fetched
+      responses:
+        '200':
+          description: User potential friends fetched successfully
+          content:
+            application/json:
+              schema:
+                properties:
+                  potentialFriends:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PotentialFriend'
+        '409':
+          description: Unexpected error occurred
 components:
   schemas:
 
@@ -659,6 +670,24 @@ components:
         accountBalance:
           type: number
           example: 25.15
+
+    InvitationWithUserFriend:
+      properties:
+        invitationId:
+          type: string
+          example: 3dc197b6-ec2a-41e1-a31a-cdd2cb169cf0
+        userId:
+          type: string
+          example: 3dc197b6-ec2a-41e1-a31a-cdd2cb169cf0
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: Doe
+        phoneNumber:
+          type: string
+          example: 512348561
 
     UserFriend:
       properties:
